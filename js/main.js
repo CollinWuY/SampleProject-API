@@ -29,6 +29,17 @@ $(document).ready(function() {
             $(".latest-psi-status").addClass(`psi-${quality}`);
             $(".latest-psi-state").addClass(`psi-${quality}`);
             $(".stats-placeholder").addClass(`psi-${quality}`);
+            $('.latest-psi-state').html(psi_twenty_four_hourly_national);
+            $('.latest-psi-time').html(`on ${dateQuery}`);
+
+            //set local storage
+
+            localStorage.setItem("eastPSI", psi_twenty_four_hourly.east);
+            localStorage.setItem("westPSI", psi_twenty_four_hourly.west);
+            localStorage.setItem("northPSI", psi_twenty_four_hourly.north);
+            localStorage.setItem("centralPSI", psi_twenty_four_hourly.national);
+            localStorage.setItem("southPSI", psi_twenty_four_hourly.south);
+
 
         },
 

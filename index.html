@@ -166,8 +166,94 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
+        async
+    </script>
+
+    <script>
+        localStorage.clear();
+        //global map varibales
+        let map;
+        let markers = [];
+        let locations = [{
+            name: "west",
+            lat: 1.35735,
+            lng: 103.7,
+        }, {
+            name: "national",
+            lat: 0,
+            lng: 0
+        }, {
+            name: "east",
+            lat: 1.35735,
+            lng: 103.94
+        }, {
+            name: "central",
+            lat: 1.35735,
+            lng: 103.82
+        }, {
+            name: "south",
+            lat: 1.29587,
+            lng: 103.82
+        }, {
+            name: "north",
+            lat: 1.41803,
+            lng: 103.82
+        }];
+
+
+        function initMap() {
+            let singaporeLocation = {
+                lat: 1.3521,
+                lng: 103.8198
+            };
+            map = new google.maps.Map(document.getElementById("map"), { //settings/options
+                center: singaporeLocation,
+                zoom: 10,
+                zoomControl: false,
+                scaleControl: false
+            });
+            for (let i = 0; i < locations.length; i++) {
+                // console.log(locations[i]);
+                let markerPosition = {
+                    "lat": locations[i].lat,
+                    "lng": locations[i].lng
+                };
+                addMarker(markerPosition, locations[i].name, map);
+            }
+
+        }
+
+        function addMarker(markerPosition, markerTitle, mapReference) {
+            //create Info Window
+            let infoWindow = new google.maps.InfoWindow({
+                content: `<div id=''>Some Text</div>`
+            })
+
+            //create Markers
+            let marker = new google.maps.Marker({
+                position: markerPosition,
+                map: mapReference,
+                animation: google.maps.Animation.DROP,
+                title: markerTitle
+            })
+
+            //Add Click Event on Markers to open InfoWindow
+            //retrieve from localSotrage psi info and update
+            marker.addListener('click', function() {
+                let psiStorage = `${marker.title}PSI`;
+                infoWindow.setContent(`<h6>${psiStorage}</h6> PSI: : ${localStorage.getItem(psiStorage)}`);
+                infoWindow.open(mapReference, marker);
+            })
+        }
+    </script>
+
+
+
     <!-- Custom JS -->
     <script src="js/main.js"></script>
+
 </body>
 
 </html>
